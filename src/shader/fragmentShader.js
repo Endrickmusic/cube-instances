@@ -30,10 +30,10 @@ void main() {
 
     // Output to screen
     // gl_FragColor = vec4(col, 1.0);
-    // gl_FragColor = vec4(vUv, 1.0, 1.0);
-    // gl_FragColor = vec4(vNormal, 1.0);
-    // gl_FragColor = vec4(matcapColor);
-    gl_FragColor = vec4(vWorldPosition, 1.0);
+    gl_FragColor = vec4(vUv, 0.0, 1.0);
+    gl_FragColor = vec4(vNormal, 1.0);
+    gl_FragColor = vec4(matcapColor);
+    // gl_FragColor = vec4(vWorldPosition, 1.0);
 	
 }
 

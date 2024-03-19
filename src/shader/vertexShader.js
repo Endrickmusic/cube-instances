@@ -19,6 +19,7 @@ void main() {
     vec4 mvPosition = modelMatrix * instanceMatrix * vec4( position, 1.0 );
 
     float offset = aRandom + sin( uTime / 3.5 + 15. * aRandom);
+    offset *= 0.;
 
     mvPosition.y += offset;
 
@@ -28,7 +29,7 @@ void main() {
     
     // Normal calculation
 
-    vNormal = normalMatrix * normal * mat3(instanceMatrix);
+    vNormal = normalMatrix * mat3(instanceMatrix) * normal ;
 
     // World position
 

@@ -10,7 +10,7 @@ export default function Model(props) {
   const instancedRef = useRef()
   const { nodes } = useGLTF('./models/ob1.glb')
   const envMap = useEnvironment({files:'./environments/aerodynamics_workshop_2k.hdr'})
-  const matcap = useTexture('./textures/sec1.png')
+  const matcap = useTexture('./textures/sec2.png')
 
   // Instancing
 
@@ -34,7 +34,7 @@ export default function Model(props) {
       let x = (i - rows / 2) * spacing
       let z = (j - rows / 2) * spacing
 
-      dummy.position.set(x, -10, z)
+      dummy.position.set(x, -10 + Math.random(), z)
       dummy.updateMatrix()
       instancedRef.current.setMatrixAt(index++, dummy.matrix)
 
