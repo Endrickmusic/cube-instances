@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useMemo } from 'react'
 import { useGLTF, useEnvironment, useTexture } from '@react-three/drei'
-import { Object3D, Vector4, InstancedBufferAttribute } from 'three'
-import { useFrame } from '@react-three/fiber'
+import { Object3D, Vector4, InstancedBufferAttribute, SRGBColorSpace } from 'three'
+import { useFrame, useThree } from '@react-three/fiber'
 
 import vertexShader from './shader/vertexShader.js'
 import fragmentShader from './shader/fragmentShader.js'
@@ -30,7 +30,8 @@ export default function Model(props) {
     for(let j=0; j < rows; j++){
       
       random[index] = Math.random()
-      const spacing = 1
+      const spacing = 1.0
+    
       let x = (i - rows / 2) * spacing
       let z = (j - rows / 2) * spacing
 
@@ -59,6 +60,7 @@ const uniforms = useMemo(
     if (instancedRef.current.material){
     instancedRef.current.material.uniforms.uTime.value += delta
   }   
+  
   })
 
   return (
