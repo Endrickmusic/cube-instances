@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react'
 import { useGLTF, useEnvironment, useTexture } from '@react-three/drei'
-import { Object3D, Vector4 } from 'three'
+import { Object3D, Vector4, InstancedBufferAttribute } from 'three'
 import { useFrame } from '@react-three/fiber'
 
 import vertexShader from './shader/vertexShader.js'
@@ -10,29 +10,31 @@ export default function Model(props) {
   const instancedRef = useRef()
   const { nodes } = useGLTF('./models/ob1.glb')
   const envMap = useEnvironment({files:'./environments/aerodynamics_workshop_2k.hdr'})
-  const matcap = useTexture('./textures/matcap3.png')
-  console.log(nodes.Cube.geometry)
+  const matcap = useTexture('./textures/sec1.png')
 
   // Instancing
 
-  let rows = 12
+  let rows = 100
   const count = rows * rows
   const dummy = new Object3D()
 
   useEffect(()=>{
 
-  console.log('useEffect')
+  console.log(instancedRef.current)
+  
 
   let index = 0
-
+  let random = new Float32Array(count)
+  console.log(random)
   for(let i=0; i < rows; i++){
     for(let j=0; j < rows; j++){
       
-      const spacing = 2.03
+      random[index] = Math.random()
+      const spacing = 1
       let x = (i - rows / 2) * spacing
       let z = (j - rows / 2) * spacing
 
-      dummy.position.set(x, -10 + Math.random(), z)
+      dummy.position.set(x, -10, z)
       dummy.updateMatrix()
       instancedRef.current.setMatrixAt(index++, dummy.matrix)
 
@@ -40,6 +42,9 @@ export default function Model(props) {
   }
 
   instancedRef.current.instanceMatrix.needsUpdate = true
+
+  // add random values to the geometry
+  instancedRef.current.geometry.setAttribute('aRandom', new InstancedBufferAttribute(random, 1) )
 },[])
 
 const uniforms = useMemo(
@@ -59,7 +64,7 @@ const uniforms = useMemo(
   return (
     <instancedMesh
     ref={instancedRef}
-    args={[nodes.Cube.geometry, undefined, count]}
+    args={[nodes['ob1-object-nodata'].geometry, undefined, count]}
 
     >
       <shaderMaterial 
