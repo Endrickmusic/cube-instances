@@ -11,7 +11,7 @@ function App() {
 return (
   <>
     <Canvas
-    orthographic 
+    // orthographic 
     camera={{ 
       // near: - 1000,
       // far: 1000,
@@ -19,7 +19,8 @@ return (
       // position: [350, 280, 350]}}
       position: [5, 3, 5]}}
     >
-      <OrbitControls />
+      {/* <initPost /> */}
+          <OrbitControls />
 
       <color attach="background" args={[0x999999]} />
       <Model />
