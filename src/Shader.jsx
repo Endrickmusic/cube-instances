@@ -38,7 +38,7 @@ export default function Shader(){
       <OrbitControls />    
       <mesh 
       ref={meshRef}
-      scale={[viewport.width, viewport.height, 1]}
+      scale={[1, 1, 1]}
       >
           <planeGeometry args={[1, 1]} />
           <shaderMaterial

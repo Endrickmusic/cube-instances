@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber'
 
 import './index.css'
 import Shader from './Shader.jsx'
+import Model from './Model.jsx'
 
 function App() {
   
@@ -15,6 +16,7 @@ function App() {
     >
       <color attach="background" args={[0x999999]} />
       <Shader />
+      <Model />
     </Canvas>
   </>
   )
