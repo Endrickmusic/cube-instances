@@ -19,7 +19,7 @@ void main() {
     vec4 mvPosition = modelMatrix * instanceMatrix * vec4( position, 1.0 );
 
     float offset = aRandom + sin( uTime / 3.5 + 15. * aRandom);
-    offset *= 0.;
+    // offset *= 0.;
 
     mvPosition.y += offset;
 

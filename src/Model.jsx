@@ -34,7 +34,7 @@ export default function Model(props) {
       let x = (i - rows / 2) * spacing
       let z = (j - rows / 2) * spacing
 
-      dummy.position.set(x, -10 + Math.random(), z)
+      dummy.position.set(x, -10, z)
       dummy.updateMatrix()
       instancedRef.current.setMatrixAt(index++, dummy.matrix)
 
