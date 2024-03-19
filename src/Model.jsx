@@ -1,18 +1,73 @@
-import React, { useRef } from 'react'
-import { useGLTF } from '@react-three/drei'
+import React, { useRef, useEffect, useMemo } from 'react'
+import { useGLTF, useEnvironment, useTexture } from '@react-three/drei'
+import { Object3D, Vector4 } from 'three'
+import { useFrame } from '@react-three/fiber'
+
+import vertexShader from './shader/vertexShader.js'
+import fragmentShader from './shader/fragmentShader.js'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('./models/ob1.glb')
+  const instancedRef = useRef()
+  const { nodes } = useGLTF('./models/ob1.glb')
+  const envMap = useEnvironment({files:'./environments/aerodynamics_workshop_2k.hdr'})
+  const matcap = useTexture('./textures/matcap3.png')
+  console.log(nodes.Cube.geometry)
+
+  // Instancing
+
+  let rows = 12
+  const count = rows * rows
+  const dummy = new Object3D()
+
+  useEffect(()=>{
+
+  console.log('useEffect')
+
+  let index = 0
+
+  for(let i=0; i < rows; i++){
+    for(let j=0; j < rows; j++){
+      
+      const spacing = 2.03
+      let x = (i - rows / 2) * spacing
+      let z = (j - rows / 2) * spacing
+
+      dummy.position.set(x, -10 + Math.random(), z)
+      dummy.updateMatrix()
+      instancedRef.current.setMatrixAt(index++, dummy.matrix)
+
+    }
+  }
+
+  instancedRef.current.instanceMatrix.needsUpdate = true
+},[])
+
+const uniforms = useMemo(
+  () => ({
+    uTime: { type: "f", value: 1.0,},
+    uMatcap: { type: "texture", value: matcap },
+    uResolution: { type: "vec2", value: new Vector4()}
+    })
+  )
+
+  useFrame((state, delta) => {
+    if (instancedRef.current.material){
+    instancedRef.current.material.uniforms.uTime.value += delta
+  }   
+  })
+
   return (
-    <group {...props} dispose={null}>
-      <mesh 
-      castShadow 
-      receiveShadow 
-      geometry={nodes.Cube.geometry} 
-      material={materials.Material} 
-      position={[0, -18, 0]}
+    <instancedMesh
+    ref={instancedRef}
+    args={[nodes.Cube.geometry, undefined, count]}
+
+    >
+      <shaderMaterial 
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={uniforms}
       />
-    </group>
+    </instancedMesh>
   )
 }
 

@@ -1,21 +1,25 @@
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useThree } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
 
 import './index.css'
-import Shader from './Shader.jsx'
 import Model from './Model.jsx'
 
 function App() {
-  
-  return (
+
+ 
+return (
   <>
 
     <Canvas
-    camera={{ 
-      position: [0, 0, 2],
-      fov: 40 }}  
+    orthographic camera={{ 
+      near: - 1000,
+      far: 1000,
+      zoom: 60, 
+      position: [350, 280, 350]}}
     >
+          <OrbitControls />
+    <directionalLight />
       <color attach="background" args={[0x999999]} />
-      <Shader />
       <Model />
     </Canvas>
   </>
